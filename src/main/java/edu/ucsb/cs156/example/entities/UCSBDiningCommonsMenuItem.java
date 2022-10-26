@@ -15,6 +15,7 @@ import lombok.Builder;
 @Entity(name = "ucsbdiningcommonsmenuitem")
 public class UCSBDiningCommonsMenuItem{
     @Id
+    private long id;
     private String diningCommonsCode;
     private String name;
     private String station;

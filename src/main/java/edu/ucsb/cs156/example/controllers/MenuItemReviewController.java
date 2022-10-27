@@ -60,7 +60,7 @@ public class MenuItemReviewController extends ApiController {
         log.info("dateReviewed={}", dateReviewed);
 
         MenuItemReview menuItemReview = new MenuItemReview();
-        menuItemReview.setItemID(itemId);
+        menuItemReview.setItemId(itemId);
         menuItemReview.setReviewerEmail(reviewerEmail);
         menuItemReview.setStars(stars);
         menuItemReview.setComments(comments);

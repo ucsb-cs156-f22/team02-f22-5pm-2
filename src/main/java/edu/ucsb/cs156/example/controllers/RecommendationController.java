@@ -77,7 +77,7 @@ public class RecommendationController extends ApiController{
         return savedRecommendation;
     }
     
-    @ApiOperation(value = "Delete a Recommendation")
+    @ApiOperation(value = "Delete a recommendation")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public Object deleteRecommendation(

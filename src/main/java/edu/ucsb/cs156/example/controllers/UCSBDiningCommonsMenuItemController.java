@@ -26,7 +26,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/ucsbdiningcommonsmenuitem")
 @RestController
 @Slf4j
-public class UCSBDiningCommonsMenuItemController {
+public class UCSBDiningCommonsMenuItemController extends ApiController{
     
     @Autowired
     UCSBDiningCommonsMenuItemRepository ucsbDiningCommonsMenuItemRepository;
@@ -57,6 +57,48 @@ public class UCSBDiningCommonsMenuItemController {
         UCSBDiningCommonsMenuItem savedMenuItems = ucsbDiningCommonsMenuItemRepository.save(menuItems);
 
         return savedMenuItems;
+    }
+
+    @ApiOperation(value = "Get a single Menu Item")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public UCSBDiningCommonsMenuItem getById(
+            @ApiParam("id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem MenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        return MenuItem;
+    }
+
+    @ApiOperation(value = "Update a single Menu Item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBDiningCommonsMenuItem updateMenuItem(
+            @ApiParam("code") @RequestParam Long id,
+            @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
+
+        UCSBDiningCommonsMenuItem menuitems = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+
+        menuitems.setDiningCommonsCode(incoming.getDiningCommonsCode());  
+        menuitems.setName(incoming.getName());
+        menuitems.setStation(incoming.getStation());
+        ucsbDiningCommonsMenuItemRepository.save(menuitems);
+
+        return menuitems;
+    }
+
+    @ApiOperation(value = "Delete a Menu Item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteMenuItem(
+            @ApiParam("id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        ucsbDiningCommonsMenuItemRepository.delete(commons);
+        return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
     }
 
     

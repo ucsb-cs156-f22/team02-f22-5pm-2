@@ -31,7 +31,7 @@ public class UCSBDiningCommonsMenuItemController {
     @Autowired
     UCSBDiningCommonsMenuItemRepository ucsbDiningCommonsMenuItemRepository;
 
-    @ApiOperation(value = "List all ucsb dining commons")
+    @ApiOperation(value = "List all Menu Items")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<UCSBDiningCommonsMenuItem> allMenuItems() {
@@ -39,11 +39,10 @@ public class UCSBDiningCommonsMenuItemController {
         return menuItems;
     }
 
-    @ApiOperation(value = "Create a new commons")
+    @ApiOperation(value = "Create a new Menu Items")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBDiningCommonsMenuItem postMenuItems(
-        @ApiParam("id") @RequestParam long id,
         @ApiParam("diningCommonsCode") @RequestParam String diningCommonsCode,
         @ApiParam("name") @RequestParam String name,
         @ApiParam("station") @RequestParam String station
@@ -51,7 +50,6 @@ public class UCSBDiningCommonsMenuItemController {
         {
 
         UCSBDiningCommonsMenuItem menuItems = new UCSBDiningCommonsMenuItem();
-        menuItems.setId(id);
         menuItems.setDiningCommonsCode(diningCommonsCode);
         menuItems.setName(name);
         menuItems.setStation(station);
@@ -60,4 +58,6 @@ public class UCSBDiningCommonsMenuItemController {
 
         return savedMenuItems;
     }
+
+    
 }

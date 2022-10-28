@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 
-@Api(description = "UCSBOrganization")
+@Api(description = "Information about UCSB organizations")
 @RequestMapping("/api/UCSBOrganization")
 @RestController
 @Slf4j
@@ -31,7 +31,7 @@ public class UCSBOrganizationController extends ApiController {
     @Autowired
     UCSBOrganizationRepository ucsbOrganizationRepository;
 
-    @ApiOperation(value = "List all ucsb organizations")
+    @ApiOperation(value = "List all UCSB organizations")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<UCSBOrganization> allOrganizations() {
@@ -43,10 +43,10 @@ public class UCSBOrganizationController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBOrganization postOrganizations(
-        @ApiParam("orgCode") @RequestParam String orgCode,
-        @ApiParam("orgTranslationShort") @RequestParam String orgTranslationShort,
-        @ApiParam("orgTranslation") @RequestParam String orgTranslation,
-        @ApiParam("inactive") @RequestParam boolean inactive
+        @ApiParam("organization code, e.g. SKY") @RequestParam String orgCode,
+        @ApiParam("organization translation (short), e.g. Skydiving Club") @RequestParam String orgTranslationShort,
+        @ApiParam("organization translation, e.g. Skydiving Club at UCSB") @RequestParam String orgTranslation,
+        @ApiParam("true (resp. false) for inactive (resp. inactive) organizations") @RequestParam boolean inactive
         )
         {
 

@@ -45,9 +45,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
     public UCSBDiningCommonsMenuItem postMenuItems(
         @ApiParam("diningCommonsCode") @RequestParam String diningCommonsCode,
         @ApiParam("name") @RequestParam String name,
-        @ApiParam("station") @RequestParam String station
-        )
-        {
+        @ApiParam("station") @RequestParam String station) {
 
         UCSBDiningCommonsMenuItem menuItems = new UCSBDiningCommonsMenuItem();
         menuItems.setDiningCommonsCode(diningCommonsCode);
@@ -66,7 +64,6 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
             @ApiParam("id") @RequestParam Long id) {
         UCSBDiningCommonsMenuItem MenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
-
         return MenuItem;
     }
 
@@ -79,8 +76,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
 
         UCSBDiningCommonsMenuItem menuitems = ucsbDiningCommonsMenuItemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
-
-
+                
         menuitems.setDiningCommonsCode(incoming.getDiningCommonsCode());  
         menuitems.setName(incoming.getName());
         menuitems.setStation(incoming.getStation());
@@ -96,7 +92,6 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
             @ApiParam("id") @RequestParam Long id) {
         UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
-
         ucsbDiningCommonsMenuItemRepository.delete(commons);
         return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
     }

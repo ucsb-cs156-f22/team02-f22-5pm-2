@@ -67,8 +67,6 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
         // Authorization tests for /api/ucsbdiningcommonsmenuitem/post
         // (Perhaps should also have these for put and delete)
 
-        /*
-
         @Test
         public void logged_out_users_cannot_post() throws Exception {
                 mockMvc.perform(post("/api/ucsbdiningcommonsmenuitem/post"))
@@ -83,7 +81,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                                 .andExpect(status().is(403)); // only admins can post
         }
 
-         */
+        
         @Test
         public void logged_out_users_cannot_put() throws Exception {
                 mockMvc.perform(post("/api/ucsbdiningcommonsmenuitem/put"))
@@ -97,7 +95,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                                 .andExpect(status().is(403)); // only admins can put
         }
 
-        /*
+        
         @Test
         public void logged_out_users_cannot_delete() throws Exception {
                 mockMvc.perform(post("/api/ucsbdiningcommonsmenuitem/delete"))
@@ -110,8 +108,6 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 mockMvc.perform(post("/api/ucsbdiningcommonsmenuitem/delete"))
                                 .andExpect(status().is(403)); // only admins can delete
         }
-
-        */
         
         // Tests with mocks for database actions
 
@@ -180,10 +176,8 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 assertEquals(expectedJson, responseString);
         }
 
-
         // get by id
 
-        
         @WithMockUser(roles = { "USER" })
         @Test
         public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
@@ -259,6 +253,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 assertEquals("UCSBDiningCommonsMenuItem with id 35 deleted", json.get("message"));
         }
 
+        
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void admin_tries_to_delete_non_existan_menuitem_and_gets_right_error_message()
@@ -281,12 +276,6 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
         // put 
         
-
-        // fails mutation testing (10 lines not covered, 4 mutations with no coverage)
-
-
-        /* 
-
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void admin_can_edit_an_existing_menuitem() throws Exception {
@@ -299,9 +288,9 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                                 .build();
 
                 UCSBDiningCommonsMenuItem portolaEdited = UCSBDiningCommonsMenuItem.builder()
-                                .diningCommonsCode("portola")
-                                .name("Baked Pesto Pasta with Chicken and Salad")
-                                .station("Entree Specials")
+                                .diningCommonsCode("ortega")
+                                .name("Salad")
+                                .station("Salad Bar")
                                 .build();
 
                 String requestBody = mapper.writeValueAsString(portolaEdited);
@@ -323,8 +312,6 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(requestBody, responseString);
         }
-
-        */
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test

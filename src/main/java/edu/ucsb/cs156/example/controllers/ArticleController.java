@@ -27,13 +27,13 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @Api(description = "Articles")
-@RequestMapping("/api/article")
+@RequestMapping("/api/Article")
 @RestController
 @Slf4j
-public class ArticlesController extends ApiController {
+public class ArticleController extends ApiController {
 
     @Autowired
-    ArticlesRepository articlesRepository;
+    ArticleRepository articleRepository;
 
     @ApiOperation(value = "List all articles")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -46,7 +46,7 @@ public class ArticlesController extends ApiController {
     @ApiOperation(value = "Get a single article")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
-    public Articles getById(
+    public Article getById(
             @ApiParam("id") @RequestParam Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Article.class, id));
@@ -75,7 +75,7 @@ public class ArticlesController extends ApiController {
         article.setUrl(url);
         article.setExplanation(explanation);
         article.setEmail(email);
-        ucsbDate.setDateAdded(dateAdded);
+        article.setDateAdded(dateAdded);
 
         Article savedArticle = articleRepository.save(article);
 
@@ -114,3 +114,4 @@ public class ArticlesController extends ApiController {
 
         return article;
     }
+}

@@ -101,7 +101,6 @@ public class RecommendationController extends ApiController{
         Recommendation recommendations = recommendationRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
 
-        recommendations.setId(incoming.getId());
         recommendations.setRequesterEmail(incoming.getRequesterEmail());
         recommendations.setProfessorEmail(incoming.getProfessorEmail());
         recommendations.setExplanation(incoming.getExplanation());

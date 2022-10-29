@@ -6,20 +6,17 @@ import edu.ucsb.cs156.example.ControllerTestCase;
 import edu.ucsb.cs156.example.entities.Recommendation;
 import edu.ucsb.cs156.example.repositories.RecommendationRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
-import org.aspectj.weaver.tools.cache.AsynchronousFileCacheBacking.RemoveCommand;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -123,14 +120,16 @@ public class RecommendationControllerTests extends ControllerTestCase {
     public void logged_in_user_can_get_all_recommendations() throws Exception {
 
             // arrange
+            LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+            LocalDateTime ldt2 = LocalDateTime.parse("2022-02-03T00:00:00");
 
             Recommendation one = Recommendation.builder()
                             .id(1)
                             .requesterEmail("requester@ucsb.edu")
                             .professorEmail("professor@ucsb.edu")
                             .explanation("explanation sample")
-                            .dateRequested(LocalDateTime.now())
-                            .dateNeeded(LocalDateTime.now())
+                            .dateRequested(ldt1)
+                            .dateNeeded(ldt1)
                             .done(false)
                             .build();
 
@@ -139,8 +138,8 @@ public class RecommendationControllerTests extends ControllerTestCase {
                             .requesterEmail("requester@ucsb.edu")
                             .professorEmail("professor@ucsb.edu")
                             .explanation("explanation sample two")
-                            .dateRequested(LocalDateTime.now())
-                            .dateNeeded(LocalDateTime.now())
+                            .dateRequested(ldt2)
+                            .dateNeeded(ldt2)
                             .done(false)
                             .build();
 
@@ -175,14 +174,14 @@ public class RecommendationControllerTests extends ControllerTestCase {
                             .explanation("testexplanation")
                             .dateRequested(ldt1)
                             .dateNeeded(ldt1)
-                            .done(false)
+                            .done(true)
                             .build();
 
             when(recommendationRepository.save(eq(one))).thenReturn(one);
 
             // act
             MvcResult response = mockMvc.perform(
-                            post("/api/recommendation/post?id=1&requesterEmail=requester@ucsb.edu&professorEmail=professor@ucsb.edu&explanation=testexplanation&dateRequested=2022-01-03T00:00:00&dateNeeded=2022-01-03T00:00:00&done=false")
+                            post("/api/recommendation/post?id=1&requesterEmail=requester@ucsb.edu&professorEmail=professor@ucsb.edu&explanation=testexplanation&dateRequested=2022-01-03T00:00:00&dateNeeded=2022-01-03T00:00:00&done=true")
                                             .with(csrf()))
                             .andExpect(status().isOk()).andReturn();
 
@@ -250,6 +249,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
             // arrange
 
             LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+            LocalDateTime ldt2 = LocalDateTime.parse("2022-02-03T00:00:00");
 
             Recommendation oRecommendation = Recommendation.builder()
                             .id(1)
@@ -266,9 +266,9 @@ public class RecommendationControllerTests extends ControllerTestCase {
                             .requesterEmail("requester1@ucsb.edu")
                             .professorEmail("professor1@ucsb.edu")
                             .explanation("edited")
-                            .dateRequested(ldt1)
-                            .dateNeeded(ldt1)
-                            .done(false)
+                            .dateRequested(ldt2)
+                            .dateNeeded(ldt2)
+                            .done(true)
                             .build();
 
             String requestBody = mapper.writeValueAsString(eRecommendation);
@@ -277,7 +277,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
 
             // act
             MvcResult response = mockMvc.perform(
-                            put("/api/recommendation?id=1&requesterEmail=requester1@ucsb.edu&professorEmail=professor1@ucsb.edu&explanation=edited&dateRequested=2022-01-03T00:00:00&dateNeeded=2022-01-03T00:00:00&done=false")
+                            put("/api/recommendation?id=1&requesterEmail=requester1@ucsb.edu&professorEmail=professor1@ucsb.edu&explanation=edited&dateRequested=2022-02-03T00:00:00&dateNeeded=2022-02-03T00:00:00&done=true")
                                             .contentType(MediaType.APPLICATION_JSON)
                                             .characterEncoding("utf-8")
                                             .content(requestBody)

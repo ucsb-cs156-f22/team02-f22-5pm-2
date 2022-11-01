@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import edu.ucsb.cs156.example.entities.Recommendation;
 import edu.ucsb.cs156.example.repositories.RecommendationRepository;
@@ -45,8 +48,8 @@ public class RecommendationController extends ApiController{
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public Recommendation getById(
-            @ApiParam("code") @RequestParam Long code) {
-        Recommendation recommendations = recommendationRepository.findById(code).orElseThrow(() -> new EntityNotFoundException(Recommendation.class, code));
+            @ApiParam("id") @RequestParam Long id) {
+        Recommendation recommendations = recommendationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
         return recommendations;
     }
 
@@ -57,27 +60,27 @@ public class RecommendationController extends ApiController{
         @ApiParam("id") @RequestParam Long id,
         @ApiParam("requesterEmail") @RequestParam String requesterEmail,
         @ApiParam("professorEmail") @RequestParam String professorEmail,
-        @ApiParam("explanation") @RequestParam String explanationString,
-        @ApiParam("dateRequested") @RequestParam LocalDateTime dateRequested,
-        @ApiParam("dateNeeded") @RequestParam LocalDateTime dateNeeded,
+        @ApiParam("explanation") @RequestParam String explanation,
+        @ApiParam("dateRequested") @RequestParam("dateRequested") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateRequested,
+        @ApiParam("dateNeeded") @RequestParam("dateNeeded") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateNeeded,
         @ApiParam("done") @RequestParam boolean done
         )
-    {
-        Recommendation recommendations = new Recommendation();
-        recommendations.setId(id);
-        recommendations.setRequesterEmail(requesterEmail);
-        recommendations.setProfessorEmail(professorEmail);
-        recommendations.setExplanation(explanationString);
-        recommendations.setDateRequested(dateRequested);
-        recommendations.setDateNeeded(dateNeeded);
-        recommendations.setDone(done);
+        throws JsonProcessingException {
+        Recommendation recommendation = new Recommendation();
+        recommendation.setId(id);
+        recommendation.setRequesterEmail(requesterEmail);
+        recommendation.setProfessorEmail(professorEmail);
+        recommendation.setExplanation(explanation);
+        recommendation.setDateRequested(dateRequested);
+        recommendation.setDateNeeded(dateNeeded);
+        recommendation.setDone(done);
 
-        Recommendation savedRecommendation = recommendationRepository.save(recommendations);
+        Recommendation savedRecommendation = recommendationRepository.save(recommendation);
 
         return savedRecommendation;
     }
     
-    @ApiOperation(value = "Delete a Recommendation")
+    @ApiOperation(value = "Delete a recommendation")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public Object deleteRecommendation(
@@ -95,7 +98,8 @@ public class RecommendationController extends ApiController{
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid Recommendation incoming) {
 
-        Recommendation recommendations = recommendationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
+        Recommendation recommendations = recommendationRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
 
         recommendations.setRequesterEmail(incoming.getRequesterEmail());
         recommendations.setProfessorEmail(incoming.getProfessorEmail());

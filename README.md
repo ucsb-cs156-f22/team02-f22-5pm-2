@@ -1,7 +1,5 @@
 # STARTER-team02
 
-TODO: Add a link to the deployed Heroku app for your team here, e.g.
-
 * [Heroku App](https://f22-5pm-2-team02.herokuapp.com)
 * [Heroku QA](https://f22-5pm-2-team02-qa.herokuapp.com)
 

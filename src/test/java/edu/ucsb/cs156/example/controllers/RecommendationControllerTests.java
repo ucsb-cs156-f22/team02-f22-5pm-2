@@ -168,7 +168,6 @@ public class RecommendationControllerTests extends ControllerTestCase {
             LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
 
             Recommendation one = Recommendation.builder()
-                            .id(1)
                             .requesterEmail("requester@ucsb.edu")
                             .professorEmail("professor@ucsb.edu")
                             .explanation("testexplanation")

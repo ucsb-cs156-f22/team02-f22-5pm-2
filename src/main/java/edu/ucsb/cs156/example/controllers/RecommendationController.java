@@ -57,7 +57,6 @@ public class RecommendationController extends ApiController{
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public Recommendation postRecommendation(
-        @ApiParam("id") @RequestParam Long id,
         @ApiParam("requesterEmail") @RequestParam String requesterEmail,
         @ApiParam("professorEmail") @RequestParam String professorEmail,
         @ApiParam("explanation") @RequestParam String explanation,
@@ -67,7 +66,6 @@ public class RecommendationController extends ApiController{
         )
         throws JsonProcessingException {
         Recommendation recommendation = new Recommendation();
-        recommendation.setId(id);
         recommendation.setRequesterEmail(requesterEmail);
         recommendation.setProfessorEmail(professorEmail);
         recommendation.setExplanation(explanation);
